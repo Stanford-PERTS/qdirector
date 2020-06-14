@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Email Selection Tool
+{% endblock %}
+
+{% block head %}
+
+<style>
+    /* The default color for placeholder text is too dark; it makes */
+    /* it seem like there's actual data already in the fields. This */
+    /* lightens it. */
+    /* https://css-tricks.com/snippets/css/style-placeholder-text/ */
+    .container.container  textarea::-webkit-input-placeholder {
+        color: #bbb;
+    }
+
+    .container textarea:-moz-placeholder { /* Firefox 18- */
+        opacity: 1;
+        color: #bbb;
+    }
+
+    .container textarea::-moz-placeholder {  /* Firefox 19+ */
+        opacity: 1;
+        color: #bbb;
+    }
+
+    .container textarea:-ms-input-placeholder {
+        color: #bbb;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+    {% include 'ctc_header.html' %}
+
+<h1>Email Selection Tool</h1>
+<p>Created by Dave Paunesku &amp; Chris Macrander. PERTS &copy; 2015</p>
+<p>
+    This tool makes it easy to find the email addresses of
+    students who have not yet completed completed a survey. You
+    will need a spreadsheet of all students' tokens and their email
+    addresses, and a list (provided by CTC) of tokens for students
+    who have already completed the survey.
+</p>
+<h3>To select email addresses...</h3>
+<ol>
+    <li>
+        Create a spreadsheet (e.g. with Excel or Google Docs) with column
+        names in the first row being "email" and "token". Include rows for all
+        the students at your institution who are participating.
+    </li>
+    <li>
+        Copy and paste the spreadsheet into the text box below labeled
+        "Email-Token Map".
+    </li>
+    <li>
+        Copy and paste the list of tokens provided by CTC for students who have
+        completed the survey into the text box below labeled "Token List". Each
+        token should be on its own line. Do not use a column name. Copying and
+        pasting from a spreadsheet will work.
+    </li>
+    <li>
+        Hit the "Go" button. A list of email addresses will appear at the
+        bottom of the page.
+    </li>
+</ol>
+<div id="alerts"></div>
+
+<div class="row">
+    <form role="form" onsubmit="return false">
+        <div class="form-group col-xs-12 col-sm-6">
+            <label for="mapTextarea">Email-Token Map</label>
+            <textarea id="mapTextarea" class="form-control"
+                      placeholder="email&Tab;token&NewLine;student@school.edu&Tab;1a2b&NewLine;...&Tab;..."
+                      style="height: 200px"></textarea>
+        </div>
+        <div class="form-group col-xs-12 col-sm-6">
+            <label for="listTextarea">Token List</label>
+            <textarea id="listTextarea" class="form-control"
+                      placeholder="1a2b&NewLine;5e6f&NewLine;..."
+                      style="height: 200px"></textarea>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <button type="button" id="emailButton" class="btn btn-primary"
+                onclick="PERTS.selectEmails()">Go</button>
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="form-group col-xs-12">
+        <label>Send reminder invitations to these students:</label>
+        <pre id="resultPre" style="height: 200px"></pre>
+    </div>
+</div>
+<h3>Security</h3>
+<p>
+
+    This tool works entirely in your web browser. Data are not
+    transferred  over the internet.
+
+</p>
+
+{% endblock %}

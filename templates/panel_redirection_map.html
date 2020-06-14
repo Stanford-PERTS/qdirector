@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Panel Redirection Map
+{% endblock %}
+
+{% block head %}
+<style>
+    .well h3 {
+        margin-top: 0px;
+        margin-bottom: 20px;
+    }
+
+    #cohortCodeSelect {
+        font-size: 20px;
+    }
+
+    #updateLinkInput {
+        width: 50%;
+    }
+
+    #updateLinkInput[readonly] {
+        cursor: not-allowed;
+        background-color: #eee;
+    }
+</style>
+
+<script type="text/javascript">
+
+var cohorts = {{ cohorts | to_json }};
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+{% include 'ctc_header.html' %}
+
+<h1>Panel Redirection Map Administrator Interface</h1>
+
+<div id="alerts"></div>
+
+<div class="well">
+    <h3>Create a new cohort code</h3>
+    <ul>
+        <li>
+
+            See
+            <a href="https://docs.google.com/document/d/1KI_4_lPCGbT3z6ET29OoXrjYxnrIwmRS7bVjYVB4gB0/edit#heading=h.m00o7ilx7waz">
+                partner institution cohort code</a>.
+
+        </li>
+        <li>
+
+            The anonymous link to the cohort's survey will
+            be used as a backup in case students cannot be identified
+            when they arrive.
+
+        </li>
+    </ul>
+    <form role="form" class="" onsubmit="return false">
+        <div class="form-group col-sm-6">
+            <label for="cohortCodeInput">
+                Cohort code<br>
+                <small>(lower case letters, numbers, and underscore only)</small>
+            </label>
+            <input id="cohortCodeInput" type="text" class="form-control">
+        </div>
+        <div class="form-group col-sm-6">
+            <label for="anonymousLinkInput">
+                Anonymous link<br>
+                <small>(must begin with http:// or https://)</small>
+            </label>
+            <input id="anonymousLinkInput" type="text" class="form-control">
+        </div>
+        <button id="createCohortButton" type="button" class="btn btn-primary"
+                onclick="PERTS.createCohort()">
+            Create cohort
+        </button>
+    </form>
+</div>
+<div class="well">
+    <h3>Upload panel to existing cohort</h3>
+    <ul>
+        <li>
+
+            Copy and paste a spreadsheet into the text box. It must include the
+            columns 'Link', 'Link Expiration', and 'token' . Any other columns
+            will be ignored.
+
+        </li>
+    </ul>
+    <form role="form" onsubmit="return false">
+        <div class="form-group">
+            <label for="cohortCodeSelect">
+                Cohort code
+            </label>
+            <select id="cohortCodeSelect">
+                {% for cohort_info in cohorts %}
+                    <option value="{{ cohort_info['cohort_code'] }}">
+                        {{ cohort_info['cohort_code'] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="updateLinkInput">
+                Anonymous Link
+            </label>
+            <input id="updateLinkInput" readonly>
+            <button type="button" class="btn" id="editLinkButton">
+                Edit
+            </button>
+            <button type="button" class="btn btn-primary" id="updateLinkButton"
+                    disabled onclick="PERTS.updateLink()">
+                Update Link
+            </button>
+        </div>
+        <div class="form-group">
+            <label for="panelTextarea">
+                Qualtrics panel csv
+            </label>
+            <textarea id="panelTextarea" class="form-control"
+                      style="width: 100%; height: 400px"></textarea>
+        </div>
+        <button type="button" id="uploadButton" class="btn btn-primary"
+                onclick="PERTS.uploadPanel()">
+            Upload panel
+        </button>
+    </form>
+</div>
+
+{% endblock %}

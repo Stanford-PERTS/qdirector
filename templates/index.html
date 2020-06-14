@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+	<body>
+		
+		<p>{{ msg }}</p>
+
+    	<a href="{{ url|safe }}">{{ url_linktext }}</a>
+
+	</body>
+</html>
+{% endautoescape %}

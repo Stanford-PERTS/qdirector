@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-6">
+        <img src="/static/images/perts_logo.png" style="height:100px;">
+    </div>
+    <div class="col-xs-12 col-sm-6" style="margin-top: 20px">
+        <a href="/deidentify">Deidentification</a><br>
+        <a href="/email_selection">Select Emails</a><br>
+        <a href="/panel_redirection_map">Panel Redirection Map</a>
+
+        {% if is_localhost %}
+
+            <br><a href="{{ google_logout_url }}">log out</a>
+
+        {% endif %}
+    </div>
+</div>

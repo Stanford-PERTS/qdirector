@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+	<body>
+		
+		<p>Hello, {{ name }}!</p>
+
+		<h1>Create a New School</h1>
+		<form method='post'>
+			<div><input placeholder='School Name' name='name'></div>
+			<div><input placeholder='URL Shortcut' name='url_name'></div>
+			<div><input placeholder='Anonymous Survey Link' name='survey'></div>
+			<div><input placeholder='Hash Variable' name='variable'></div>
+			<div><input placeholder='Salt Value' name='salt'></div>
+			<div><input type='submit' value='Create School'></div>
+		</form> 
+
+		{% if schools %}
+			{% for school in schools %}
+				<h1>{{ school.name }}</h1>
+				<a href='/edit/{{ school.url_name }}'>Edit School</a>
+				<a href='/delete/{{ school.url_name }}'>Delete School</a>
+				<p><b>URL abbreviation: </b>{{ school.url_name }}
+				- Construct incoming URL as <i>http://q-director.appspot.com/r/{{school.url_name}}/?</i> + variables.
+				</p>
+				<p><b>Qualtrics anonymous survey link: </b>{{ school.survey }}</p>
+				<p><b>URL variable to be hashed: </b>{{ school.variable }}</p>
+				<p><b>URL salt value: </b>{{ school.salt }}</p>
+			{% endfor %}
+		{% endif %}
+
+    	<a href="{{ url|safe }}">{{ url_linktext }}</a>
+
+	</body>
+</html>
+{% endautoescape %}

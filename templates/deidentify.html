@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Student Data Deidentification Tool
+{% endblock %}
+
+{% block content %}
+
+{% include 'ctc_header.html' %}
+
+<h1>Student Data Deidentification Tool</h1>
+<p>Created by Dave Paunesku &amp; Chris Macrander. PERTS &copy; 2015</p>
+<p>
+    This tool allows you to <em>deidentify</em> data about students in a
+    controlled, secure, and quick way. Given a table of data, where each row
+    represents a student, it uses
+    <a href="http://en.wikipedia.org/wiki/Cryptographic_hash_function"
+       target="_blank">1-way cryptographic hashing</a> to protect the
+    names/IDs of students. After processing, the data can be shared without
+    risking the privacy of individuals.
+</p>
+<h3>To deidentify student data...</h3>
+<ol>
+    <li>
+        Create a spreadsheet (e.g. with Excel or Google Docs) where each row
+        contains data about an individual. All data should be anonymous except
+        for a single column: the unique name or ID of that student. This is
+        the column that will be deidentified.
+    </li>
+    <li>
+        Include the column names in the first row of the spreadsheet.
+    </li>
+    <li>
+        Name the column that must be deidentified "plaintext_token". Make sure
+        other columns don't contain personally identifiable data. This column
+        will be re-named to "token" after deidentification.
+    </li>
+    <li>
+        Copy and paste from the spreadsheet into the large text box below.
+    </li>
+    <li>
+        Enter a password of 20-40 characters into the "Password"
+        field below. This code will be used as the
+        <a href="http://en.wikipedia.org/wiki/Salt_(cryptography)"
+           target="_blank">salt</a>
+        when
+        <a href="http://en.wikipedia.org/wiki/Cryptographic_hash_function"
+           target="_blank">1-way encrypting</a>
+        the plaintext_token field. <em>(If you need help generating a password,
+        try
+        <a target="_blank" href="https://www.random.org/strings/?num=1&len=20&digits=on&upperalpha=on&loweralpha=on&unique=off&format=html&rnd=new">
+            random.org</a>)</em>
+    </li>
+    <li>
+        Keep your password secure. You will need to use the same password on
+        each data file, otherwise student records won't match across files.
+    </li>
+    <li>
+        Hit the "Go" button.
+    </li>
+    <li>
+        When deidentification is complete, copy the deidentified records in the
+        text box, and paste into a new spreadsheet. This data may be now be
+        shared securely.
+    </li>
+</ol>
+<div id="alerts"></div>
+
+<div>
+    <form role="form" onsubmit="return false">
+        <div class="form-group">
+            <label>
+                Password
+                <small>
+                    (20-40 characters; save this password and keep it secure)
+                </small>
+                <input id="saltInput" type="text"
+                       class="form-control">
+            </label>
+        </div>
+
+        <div style="margin-bottom: 20px">
+            <button type="button" id="deidentifyButton" class="btn btn-primary"
+                    onclick="PERTS.deidentify()">Go</button>
+            Progress: <span id="progressSpan">0</span>%
+        </div>
+        <div class="form-group">
+            <label for="dataTextarea">Student Data (must include "plaintext_token" column to deidentify)</label>
+            <textarea id="dataTextarea" class="form-control"
+                      style="width: 100%; height: 400px"></textarea>
+        </div>
+
+    </form>
+<h3>Security</h3>
+<p>
+    This tool works entirely in your web browser. Data are not transferred over
+    the internet. This tool will 1-way encrypt the plaintext_token field using
+    your secret code, making it infeasible for anyone to determine the original
+    student ID. However, this tool is not magical. For the data to be securely
+    deidentified, you must keep your password secret, and you must ensure
+    that there are no other data (besides plaintext_token) that would enable
+    someone to deduce the identity of individual students.
+</p>
+
+{% endblock %}

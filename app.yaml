@@ -1,0 +1,49 @@
+application: q-director
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+env_variables:
+  HOSTING_DOMAIN: 'tools.perts.net'
+
+handlers:
+- url: /static
+  static_dir: static
+
+- url: /deidentify
+  script: ctc.app
+  secure: always
+
+- url: /email_selection
+  script: ctc.app
+  secure: always
+
+# Admin interface of the prm
+- url: /panel_redirection_map
+  script: ctc.app
+  login: required
+  secure: always
+
+# Students are sent here for the prm
+# to do its work. No login!
+- url: /prm/.*
+  script: ctc.app
+  secure: always
+
+- url: /logout
+  script: ctc.app
+  secure: always
+
+- url: /.*
+  script: handlers.app
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
+- name: jinja2
+  version: latest
+- name: MySQLdb
+  version: "latest"
+- name: pycrypto
+  version: "latest"
